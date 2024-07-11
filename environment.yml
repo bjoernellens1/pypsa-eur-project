@@ -46,5 +46,11 @@ dependencies:
   - xarray[version='>=2023.11.0']
   - xlrd
   - yaml
+  - pip:
+    - tsam>=2.3.1
+    - snakemake-storage-plugin-http
+    - snakemake-executor-plugin-slurm
+    - snakemake-executor-plugin-cluster-generic
+    - highspy
 prefix: /srv/conda/envs/pypsa-eur
 
