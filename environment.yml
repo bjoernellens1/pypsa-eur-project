@@ -40,7 +40,7 @@ dependencies:
   - scipy
   - seaborn
   - shapely[version='>=2.0']
-  - snakemake-minimali #[version='>=8.14']
+  - snakemake-minimal #[version='>=8.14']
   - tabula-py
   - tqdm
   - xarray[version='>=2023.11.0']
