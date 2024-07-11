@@ -2,7 +2,7 @@ name: pypsa-eur
 channels:
   - conda-forge
   - defaults
-#  - bioconda
+  - bioconda
 dependencies:
   - atlite[version='>=0.2.9']
   - cartopy
