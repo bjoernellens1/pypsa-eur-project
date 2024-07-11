@@ -12,6 +12,7 @@ SPDX-License-Identifier: CC-BY-4.0
 [![Snakemake](https://img.shields.io/badge/snakemake-≥7.7.0-brightgreen.svg?style=flat)](https://snakemake.readthedocs.io)
 [![REUSE status](https://api.reuse.software/badge/github.com/pypsa/pypsa-eur)](https://api.reuse.software/info/github.com/pypsa/pypsa-eur)
 [![Stack Exchange questions](https://img.shields.io/stackexchange/stackoverflow/t/pypsa)](https://stackoverflow.com/questions/tagged/pypsa)
+[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/bjoernellens1/pypsa-eur/master)
 
 # PyPSA-Eur: A Sector-Coupled Open Optimisation Model of the European Energy System
 
