@@ -48,6 +48,8 @@ jobs:
         NO_PUSH: false #true
         DOCKER_REGISTRY: "ghcr.io"
         #IMAGE_NAME: ${{ github.repository }}
+        DOCKER_USERNAME: ${{ github.actor }}
+        DOCKER_PASSWORD: ${{ secrets.GITHUB_TOKEN }}
 
     - name: Install Cosign
       uses: sigstore/cosign-installer@v3.5.0
