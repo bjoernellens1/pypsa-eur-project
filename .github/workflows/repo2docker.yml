@@ -10,7 +10,47 @@ jobs:
       with:
         ref: ${{ github.event.pull_request.head.sha }}
 
+    #Login against a Docker registry except on PR
+    #https://github.com/docker/login-action
+    - name: Log into registry ${{ env.REGISTRY }}
+      if: github.event_name != 'pull_request'
+      uses: docker/login-action@343f7c4344506bcbf9b4de18042ae17996df046d # v3.0.0
+      with:
+        registry: ${{ env.REGISTRY }}
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }} #${{ secrets.GHCR_PAT }}
+        
+    # Extract metadata (tags, labels) for Docker
+    # https://github.com/docker/metadata-action
+    - name: Extract Docker metadata
+      id: meta
+      uses: docker/metadata-action@96383f45573cb7f253c731d3b3ab81c87ef81934 # v5.0.0
+      with:
+        images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+
     - name: update jupyter dependencies with repo2docker
       uses: jupyterhub/repo2docker-action@master
       with:
-        NO_PUSH: true
+        NO_PUSH: false #true
+        DOCKER_REGISTRY: "ghcr.io"
+        IMAGE_NAME: "ghcr.io/pypsa-eur"
+
+    - name: Install Cosign
+      uses: sigstore/cosign-installer@v3.5.0
+    - name: Check install!
+      run: cosign version
+
+    # Sign the resulting Docker image digest except on PRs.
+    # This will only write to the public Rekor transparency log when the Docker
+    # repository is public to avoid leaking data.  If you would like to publish
+    # transparency data even for private images, pass --force to cosign below.
+    # https://github.com/sigstore/cosign
+    - name: Sign the published Docker image
+      if: ${{ github.event_name != 'pull_request' }}
+      env:
+        # https://docs.github.com/en/actions/security-guides/security-hardening-for-github-actions#using-an-intermediate-environment-variable
+        TAGS: ${{ steps.meta.outputs.tags }}
+        DIGEST: ${{ steps.build-and-push.outputs.digest }}
+      # This step uses the identity token to provision an ephemeral certificate
+      # against the sigstore community Fulcio instance.
+      run: echo "${TAGS}" | xargs -I {} cosign sign --yes {}@${DIGEST}
