@@ -47,7 +47,7 @@ jobs:
       with:
         NO_PUSH: false #true
         DOCKER_REGISTRY: "ghcr.io"
-        IMAGE_NAME: "ghcr.io/pypsa-eur"
+        IMAGE_NAME: ${{ github.repository }}
 
     - name: Install Cosign
       uses: sigstore/cosign-installer@v3.5.0
