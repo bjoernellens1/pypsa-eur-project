@@ -50,6 +50,7 @@ jobs:
         #IMAGE_NAME: ${{ github.repository }}
         DOCKER_USERNAME: ${{ github.actor }}
         DOCKER_PASSWORD: ${{ secrets.GITHUB_TOKEN }}
+        BINDER_CACHE: true
 
     # - name: Install Cosign
     #   uses: sigstore/cosign-installer@v3.5.0
