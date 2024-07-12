@@ -48,6 +48,7 @@ dependencies:
   - yaml
   - jupyter
   - jupyterhub
+  - notebook
   - pip:
     - tsam>=2.3.1
     - snakemake-storage-plugin-http
