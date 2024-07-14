@@ -1,0 +1,59 @@
+name: pypsa-eur
+channels:
+  - conda-forge
+  - defaults
+  - bioconda
+dependencies:
+  - atlite[version='>=0.2.9']
+  - cartopy
+  - country_converter
+  - dask
+  - descartes
+  - fiona
+  - geopandas[version='>=1']
+  - geopy
+  - glpk
+  - graphviz
+  - ipython
+  - linopy
+  - lxml
+  - matplotlib
+  - memory_profiler
+  - netcdf4
+  - networkx
+  - numpy
+  - openpyxl!=3.1.1
+  - pandas[version='>=2.1']
+  - pip
+  - powerplantmatching[version='>=0.5.15']
+  - pre-commit
+  - proj
+  - pycountry
+  - pypsa[version='>=0.28']
+  - pyscipopt
+  - pytables
+  - python[version='>=3.8']
+  - pytz
+  - pyxlsb
+  - rasterio!=1.2.10
+  - rioxarray
+  - scipy
+  - seaborn
+  - shapely[version='>=2.0']
+  - snakemake-minimal #[version='>=8.14']
+  - tabula-py
+  - tqdm
+  - xarray[version='>=2023.11.0']
+  - xlrd
+  - yaml
+  # - jupyter
+  # - jupyterhub
+  # - notebook
+  - pip:
+    - tsam>=2.3.1
+    - snakemake-storage-plugin-http
+    - snakemake-executor-plugin-slurm
+    - snakemake-executor-plugin-cluster-generic
+    - highspy
+    - pysqlite
+prefix: /srv/conda/envs/pypsa-eur
