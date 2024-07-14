@@ -1,0 +1,120 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - master
+    tags:
+      - '**'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      TZ: "/usr/share/zoneinfo/America/Los_Angeles"
+      CACHE_VERSION: 'v1' # Example value, adjust as needed
+
+    steps:
+      - name: Test if the user has defined the repository name
+        run: sudo apt-get update && sudo apt-get install -y pigz python3
+
+      - name: Install parallel gzip and python3
+        run: sudo apt-get update && sudo apt-get install -y pigz python3
+
+      - name: Restore Docker cache
+        id: docker-cache
+        uses: actions/cache@v3
+        with:
+          path: /tmp/cache/container.tar.gz
+          key: docker-${{ env.CACHE_VERSION }}-${{ github.ref }}
+
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Git submodules
+        run: git submodule update --init --recursive
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Load Docker image layer cache
+        run: |
+          docker info
+          if [ -f /tmp/cache/container.tar.gz ]; then
+            pigz -d --stdout /tmp/cache/container.tar.gz | docker load
+          fi
+          docker images
+
+      - name: Run jupyter-repo2docker to generate Docker Container
+        run: |
+          echo "0. Installing dependencies..."
+          python3 -m venv venv
+          . venv/bin/activate
+          pip install jupyter-repo2docker
+          export VERSION=$(python3 -c "import repo2docker; print(repo2docker.__version__)")
+          echo "repo2docker version: ${VERSION}"
+          echo "1. Preparing building environment"
+          echo "Working directory is ${PWD}"
+          DOCKER_TAG=${{ env.DOCKER_TAG || github.sha }}
+          CONTAINER_NAME=${{ env.CONTAINER_NAME || github.repository }}
+          echo "Container name is ${CONTAINER_NAME}"
+          REPO_NAME=${{ env.REPO_NAME || '/tmp/src' }}
+          echo "Repository name (REPO_NAME) is not defined, will build ${github.repository} in ${REPO_NAME}"
+          ls ${REPO_NAME}
+          echo "2. Running jupyter-repo2docker..."
+          set -x
+          if docker pull "${CONTAINER_NAME}:${DOCKER_TAG}"; then
+            jupyter-repo2docker --debug --user-name jovyan --user-id 1000 --no-run --image-name "${CONTAINER_NAME}:${DOCKER_TAG}" --cache-from "${CONTAINER_NAME}:${DOCKER_TAG}" "${REPO_NAME}"
+          else
+            jupyter-repo2docker --debug --user-name jovyan --user-id 1000 --no-run --image-name "${CONTAINER_NAME}:${DOCKER_TAG}" "${REPO_NAME}"
+          fi
+          docker ps
+          docker images
+
+      - name: Docker Save
+        run: |
+          DOCKER_TAG=${{ env.DOCKER_TAG || github.sha }}
+          CONTAINER_NAME=${{ env.CONTAINER_NAME || github.repository }}
+          echo "Saving ${CONTAINER_NAME}:${DOCKER_TAG} to container.tar.gz"
+          mkdir -p /tmp/cache
+          docker save ${CONTAINER_NAME}:${DOCKER_TAG} | pigz -2 -p 3 > /tmp/cache/container.tar.gz
+
+      - name: Upload Docker cache to workspace
+        uses: actions/upload-artifact@v3
+        with:
+          name: docker-cache
+          path: /tmp/cache/container.tar.gz
+
+  # deploy:
+  #   runs-on: ubuntu-latest
+  #   needs: build
+  #   if: github.ref == 'refs/heads/master'
+  #   steps:
+  #     - name: Download Docker cache from workspace
+  #       uses: actions/download-artifact@v3
+  #       with:
+  #         name: docker-cache
+  #         path: /tmp/cache
+
+  #     - name: Load Docker image layer cache
+  #       run: |
+  #         echo "Working directory is ${PWD}"
+  #         docker info
+  #         if [ -f /tmp/cache/container.tar.gz ]; then
+  #           sudo apt update && sudo apt -y install pigz
+  #           pigz -d --stdout /tmp/cache/container.tar.gz | docker load
+  #           docker images
+  #         fi
+
+  #     - name: Deploy to Docker Hub
+  #       env:
+  #         DOCKER_USER: ${{ secrets.DOCKER_USER }}
+  #         DOCKER_PASS: ${{ secrets.DOCKER_PASS }}
+  #       run: |
+  #         DOCKER_TAG=${{ env.DOCKER_TAG || github.sha }}
+  #         CONTAINER_NAME=${{ env.CONTAINER_NAME || github.repository }}
+  #         echo "Container name set to ${CONTAINER_NAME}:${DOCKER_TAG}"
+  #         if [ -n "$DOCKER_PASS" ]; then
+  #           echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
+  #           docker push ${CONTAINER_NAME}:${DOCKER_TAG}
+  #         fi
