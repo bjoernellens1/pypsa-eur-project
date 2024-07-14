@@ -27,7 +27,7 @@ jobs:
           key: docker-${{ env.CACHE_VERSION }}-${{ github.ref }}
 
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Git submodules
         run: git submodule update --init --recursive
