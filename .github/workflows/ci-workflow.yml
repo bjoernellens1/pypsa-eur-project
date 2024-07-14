@@ -58,7 +58,7 @@ jobs:
           DOCKER_TAG=${{ env.DOCKER_TAG || github.sha }}
           CONTAINER_NAME=${{ env.CONTAINER_NAME || github.repository }}
           echo "Container name is ${CONTAINER_NAME}"
-          REPO_NAME=${{ env.REPO_NAME || '/tmp/src' }}
+          REPO_NAME=${{ env.REPO_NAME || github.workspace }}
           # echo "Repository name (REPO_NAME) is not defined, will build ${github.repository} in ${REPO_NAME}"
           ls ${REPO_NAME}
           echo "2. Running jupyter-repo2docker..."
