@@ -62,7 +62,7 @@ dependencies:
 
   # Adding newer jupyterlab ui
 # - jupyterlab
-- jupyter # try all jupyter packages
+# - jupyter # try all jupyter packages
 
 
 - pip:
