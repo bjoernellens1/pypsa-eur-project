@@ -61,7 +61,8 @@ dependencies:
 - pysqlite3
 
   # Adding newer jupyterlab ui
-- jupyterlab
+# - jupyterlab
+- jupyter # try all jupyter packages
 
 
 - pip:
