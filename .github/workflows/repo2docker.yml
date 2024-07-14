@@ -50,14 +50,14 @@ jobs:
         #IMAGE_NAME: ${{ github.repository }}
         DOCKER_USERNAME: ${{ github.actor }}
         DOCKER_PASSWORD: ${{ secrets.GITHUB_TOKEN }}
-        BINDER_CACHE: true
-        MYBINDERORG_TAG: ${{ github.event.ref }}
-        PUBLIC_REGISTRY_CHECK: true
+        # BINDER_CACHE: true
+        # MYBINDERORG_TAG: ${{ github.event.ref }}
+        # PUBLIC_REGISTRY_CHECK: true
 
-    - name: manually run repo2docker and push
-      run: |
-        pip install repo2docker
-        repo2docker --no-run --push .
+    # - name: manually run repo2docker and push
+    #   run: |
+    #     pip install repo2docker
+    #     repo2docker --no-run --push .
       
 
     # - name: Install Cosign
