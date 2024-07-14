@@ -72,6 +72,8 @@ jobs:
           docker images
 
       - name: Docker Save
+        env:
+          DOCKER_REGISTRY: ghcr.io
         run: |
           DOCKER_TAG=${{ env.DOCKER_TAG || github.sha }}
           CONTAINER_NAME=${{ env.CONTAINER_NAME || github.repository }}
