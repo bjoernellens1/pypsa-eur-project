@@ -54,6 +54,12 @@ jobs:
         MYBINDERORG_TAG: ${{ github.event.ref }}
         PUBLIC_REGISTRY_CHECK: true
 
+    - name: manually run repo2docker and push
+      run: |
+        pip install repo2docker
+        repo2docker --no-run --push .
+      
+
     # - name: Install Cosign
     #   uses: sigstore/cosign-installer@v3.5.0
     # - name: Check install!
