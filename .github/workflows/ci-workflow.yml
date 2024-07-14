@@ -35,13 +35,13 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
-      - name: Load Docker image layer cache
-        run: |
-          docker info
-          if [ -f /tmp/cache/container.tar.gz ]; then
-            pigz -d --stdout /tmp/cache/container.tar.gz | docker load
-          fi
-          docker images
+      # - name: Load Docker image layer cache
+      #   run: |
+      #     docker info
+      #     if [ -f /tmp/cache/container.tar.gz ]; then
+      #       pigz -d --stdout /tmp/cache/container.tar.gz | docker load
+      #     fi
+      #     docker images
 
       - name: Run jupyter-repo2docker to generate Docker Container
         env:
