@@ -75,9 +75,9 @@ jobs:
         run: |
           DOCKER_TAG=${{ env.DOCKER_TAG || github.sha }}
           CONTAINER_NAME=${{ env.CONTAINER_NAME || github.repository }}
-          echo "Saving ${CONTAINER_NAME}:${DOCKER_TAG} to container.tar.gz"
+          echo "Saving ${DOCKER_REGISTRY}/${CONTAINER_NAME}:${DOCKER_TAG} to container.tar.gz"
           mkdir -p /tmp/cache
-          docker save ${CONTAINER_NAME}:${DOCKER_TAG} | pigz -2 -p 3 > /tmp/cache/container.tar.gz
+          docker save ${DOCKER_REGISTRY}/${CONTAINER_NAME}:${DOCKER_TAG} | pigz -2 -p 3 > /tmp/cache/container.tar.gz
 
       - name: Upload Docker cache to workspace
         uses: actions/upload-artifact@v4
