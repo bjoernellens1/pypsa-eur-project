@@ -83,36 +83,47 @@ jobs:
           name: docker-cache
           path: /tmp/cache/container.tar.gz
 
-  # deploy:
-  #   runs-on: ubuntu-latest
-  #   needs: build
-  #   if: github.ref == 'refs/heads/master'
-  #   steps:
-  #     - name: Download Docker cache from workspace
-  #       uses: actions/download-artifact@v3
-  #       with:
-  #         name: docker-cache
-  #         path: /tmp/cache
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+    if: github.ref == 'refs/heads/master'
+    steps:
+      - name: Download Docker cache from workspace
+        uses: actions/download-artifact@v4
+        with:
+          name: docker-cache
+          path: /tmp/cache
 
-  #     - name: Load Docker image layer cache
-  #       run: |
-  #         echo "Working directory is ${PWD}"
-  #         docker info
-  #         if [ -f /tmp/cache/container.tar.gz ]; then
-  #           sudo apt update && sudo apt -y install pigz
-  #           pigz -d --stdout /tmp/cache/container.tar.gz | docker load
-  #           docker images
-  #         fi
+      - name: Load Docker image layer cache
+        run: |
+          echo "Working directory is ${PWD}"
+          docker info
+          if [ -f /tmp/cache/container.tar.gz ]; then
+            sudo apt update && sudo apt -y install pigz
+            pigz -d --stdout /tmp/cache/container.tar.gz | docker load
+            docker images
+          fi
 
-  #     - name: Deploy to Docker Hub
-  #       env:
-  #         DOCKER_USER: ${{ secrets.DOCKER_USER }}
-  #         DOCKER_PASS: ${{ secrets.DOCKER_PASS }}
-  #       run: |
-  #         DOCKER_TAG=${{ env.DOCKER_TAG || github.sha }}
-  #         CONTAINER_NAME=${{ env.CONTAINER_NAME || github.repository }}
-  #         echo "Container name set to ${CONTAINER_NAME}:${DOCKER_TAG}"
-  #         if [ -n "$DOCKER_PASS" ]; then
-  #           echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
-  #           docker push ${CONTAINER_NAME}:${DOCKER_TAG}
-  #         fi
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Deploy to Docker Hub
+        # env:
+        #   DOCKER_USER: ${{ github.actor }}
+        #   DOCKER_PASS: ${{ secrets.GITHUB_TOKEN }}
+        #   DOCKER_REGISTRY: ghcr.io
+        run: |
+          DOCKER_TAG=${{ env.DOCKER_TAG || github.sha }}
+          CONTAINER_NAME=${{ env.CONTAINER_NAME || github.repository }}
+          echo "Container name set to ${CONTAINER_NAME}:${DOCKER_TAG}"
+          # if [ -n "$DOCKER_PASS" ]; then
+          #   echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
+          #   docker push ${CONTAINER_NAME}:${DOCKER_TAG}
+          # fi
+          docker push ${CONTAINER_NAME}:${DOCKER_TAG}
+
+          
