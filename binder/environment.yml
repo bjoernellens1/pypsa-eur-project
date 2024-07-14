@@ -57,6 +57,9 @@ dependencies:
 - descartes
 - rasterio!=1.2.10
 
+  # error fixing ModuleNotFoundError: No module named 'pysqlite2'
+- pysqlite3
+
 
 - pip:
   - tsam>=2.3.1
