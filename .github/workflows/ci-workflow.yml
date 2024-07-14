@@ -62,7 +62,7 @@ jobs:
           ls ${REPO_NAME}
           echo "2. Running jupyter-repo2docker..."
           set -x
-          jupyter-repo2docker --debug --user-name jovyan --user-id 1000 --no-run --image-name "${DOCKER_REGISTRY}/${CONTAINER_NAME}:${DOCKER_TAG}" --ref ${GITHUB_SHA} --label ${DOCKER_REGISTRY}/${github.repository} "${REPO_NAME}"                      
+          jupyter-repo2docker --debug --user-name jovyan --user-id 1000 --no-run --image-name ${DOCKER_REGISTRY}/${CONTAINER_NAME}:${DOCKER_TAG} --ref ${GITHUB_SHA} --label ${DOCKER_REGISTRY}/${github.repository} "${REPO_NAME}"                      
           docker ps
           docker images
 
