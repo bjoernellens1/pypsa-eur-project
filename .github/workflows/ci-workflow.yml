@@ -59,15 +59,10 @@ jobs:
           CONTAINER_NAME=${{ env.CONTAINER_NAME || github.repository }}
           echo "Container name is ${CONTAINER_NAME}"
           REPO_NAME=${{ env.REPO_NAME || github.workspace }}
-          # echo "Repository name (REPO_NAME) is not defined, will build ${github.repository} in ${REPO_NAME}"
           ls ${REPO_NAME}
           echo "2. Running jupyter-repo2docker..."
           set -x
-          if docker pull "${DOCKER_REGISTRY}/${CONTAINER_NAME}:${DOCKER_TAG}"; then
-            jupyter-repo2docker --debug --user-name jovyan --user-id 1000 --no-run --image-name "${DOCKER_REGISTRY}/${CONTAINER_NAME}:${DOCKER_TAG}" --ref ${GITHUB_SHA} --label ${DOCKER_REGISTRY}/${github.repository} --cache-from "${DOCKER_REGISTRY}/${CONTAINER_NAME}:${DOCKER_TAG}" "${REPO_NAME}"
-          else
-            jupyter-repo2docker --debug --user-name jovyan --user-id 1000 --no-run --image-name "${DOCKER_REGISTRY}/${CONTAINER_NAME}:${DOCKER_TAG}" --ref ${GITHUB_SHA} --label ${DOCKER_REGISTRY}/${github.repository} "${REPO_NAME}"
-          fi                              
+          jupyter-repo2docker --debug --user-name jovyan --user-id 1000 --no-run --image-name "${DOCKER_REGISTRY}/${CONTAINER_NAME}:${DOCKER_TAG}" --ref ${GITHUB_SHA} --label ${DOCKER_REGISTRY}/${github.repository} "${REPO_NAME}"                      
           docker ps
           docker images
 
