@@ -55,5 +55,5 @@ dependencies:
     - snakemake-executor-plugin-slurm
     - snakemake-executor-plugin-cluster-generic
     - highspy
-    - pysqlite
+    # - pysqlite
 prefix: /srv/conda/envs/pypsa-eur
