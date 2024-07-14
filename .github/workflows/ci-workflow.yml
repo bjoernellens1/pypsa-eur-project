@@ -45,7 +45,7 @@ jobs:
 
       - name: Run jupyter-repo2docker to generate Docker Container
         env:
-          DOCKER_REGISTRY: ghcr.io
+          DOCKER_REGISTRY: "ghcr.io"
         run: |
           echo "0. Installing dependencies..."
           python3 -m venv venv
