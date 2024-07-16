@@ -1,0 +1,11 @@
+version: '3.8'
+services:
+  dev:
+	build:
+	  context: ..
+	  dockerfile: Dockerfile
+	image: ghcr.io/bjoernellens1/pypsa-eur-project:latest
+	volumes:
+	  - .:/workspace
+	ports:
+	  - "8888:8888" # Example: Expose port 8888 for Jupyter notebooks

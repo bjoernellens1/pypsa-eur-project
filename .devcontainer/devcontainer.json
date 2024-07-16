@@ -1,12 +1,14 @@
 // For format details, see https://aka.ms/devcontainer.json. For config options, see the
-// README at: https://github.com/devcontainers/templates/tree/main/src/anaconda
+// README at: https://github.com/devcontainers/templates/tree/main/src/miniconda
 {
-	"name": "Anaconda (Python 3)",
-	// "image": "ghcr.io/bjoernellens1/pypsa-eur-project:latest",
-	"build": { 
-		"context": "..",
-		"dockerfile": "Dockerfile"
-	}
+	"name": "Miniconda (Python 3)",
+	// "build": { 
+	// 	"context": "..",
+	// 	"dockerfile": "Dockerfile"
+	// },
+	// "image": "ghcr.io/bjoernellens1/pypsa-eur-project:latest"
+	"dockerComposeFile": "docker-compose.yml",
+    "service": "dev"
 
 	// Features to add to the dev container. More info: https://containers.dev/features.
 	// "features": {},
