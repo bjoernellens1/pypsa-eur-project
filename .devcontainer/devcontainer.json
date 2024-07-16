@@ -2,6 +2,7 @@
 // README at: https://github.com/devcontainers/templates/tree/main/src/anaconda
 {
 	"name": "Anaconda (Python 3)",
+	// "image": "ghcr.io/bjoernellens1/pypsa-eur-project:latest",
 	"build": { 
 		"context": "..",
 		"dockerfile": "Dockerfile"

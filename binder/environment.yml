@@ -6,6 +6,7 @@ name: pypsa-eur
 channels:
 - conda-forge
 - bioconda
+- gurobi
 dependencies:
 - python>=3.8
 - pip
@@ -64,6 +65,8 @@ dependencies:
 # - jupyterlab
 # - jupyter # try all jupyter packages
 
+# maybe necessary for notebooks
+- ipykernel
 
 - pip:
   - tsam>=2.3.1
