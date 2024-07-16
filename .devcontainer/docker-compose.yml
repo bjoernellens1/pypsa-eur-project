@@ -1,10 +1,10 @@
 version: '3.8'
 services:
   dev:
+    image: ghcr.io/bjoernellens1/pypsa-eur-project:latest
     build:
       context: ..
       dockerfile: .devcontainer/Dockerfile
-    image: ghcr.io/bjoernellens1/pypsa-eur-project:latest
     volumes:
       - .:/workspace
     ports:
