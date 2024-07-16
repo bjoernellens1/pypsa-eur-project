@@ -13,10 +13,34 @@ jobs:
     env:
       TZ: "/usr/share/zoneinfo/Europe/Amsterdam"
       CACHE_VERSION: 'v1' # Example value, adjust as needed
+    permissions:
+      contents: read
+      packages: write
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4.1.7
+
+      - name: Docker Login
+        # You may pin to the exact commit or the version.
+        # uses: docker/login-action@0d4c9c5ea7693da7b068278f7b52bda2a190a446
+        uses: docker/login-action@v3.2.0
+        # with:
+        #   # Server address of Docker registry. If not set then will default to Docker Hub
+        #   registry: # optional
+        #   # Username used to log against the Docker registry
+        #   username: # optional
+        #   # Password or personal access token used to log against the Docker registry
+        #   password: # optional
+        #   # Specifies whether the given registry is ECR (auto, true or false)
+        #   ecr: # optional, default is auto
+        #   # Log out from the Docker registry at the end of a job
+        #   logout: # optional, default is true
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+          
           
       - name: Dev Container Build and Run Action
         # You may pin to the exact commit or the version.
@@ -36,7 +60,7 @@ jobs:
           # # Specify path to checked out folder if not using default (or for testing with nektos/act)
           # checkoutPath: # optional, default is .
           # # Control when images are pushed. Options are never, filter, always. For filter (default), images are pushed if the refFilterForPush and eventFilterForPush conditions are met
-          # push: # optional, default is filter
+          push: always # optional, default is filter
           # # Set the source branches (e.g. refs/heads/main) that are allowed to trigger a push of the dev container image. Leave empty to allow all.
           # refFilterForPush: # optional
           # # Set the event names (e.g. pull_request, push) that are allowed to trigger a push of the dev container image. Defaults to push. Leave empty for all
@@ -48,7 +72,7 @@ jobs:
           # # Some steps for building the dev container (e.g. container-features) require generating additional build files. To aid docker build cache re-use, you can use this property to set the path that these files will be generated under and use the actions/cache action to cache that folder across runs
           # userDataFolder: # optional
           # # Specify additional images to use for build caching
-          # cacheFrom: # optional
+          cacheFrom: ghcr.io/bjoernellens1/pypsa-eur-project # optional
           # # Builds the image with `--no-cache` (takes precedence over `cacheFrom`)
           # noCache: # optional
           
