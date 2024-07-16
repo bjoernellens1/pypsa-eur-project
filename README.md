@@ -14,6 +14,8 @@ SPDX-License-Identifier: CC-BY-4.0
 [![Stack Exchange questions](https://img.shields.io/stackexchange/stackoverflow/t/pypsa)](https://stackoverflow.com/questions/tagged/pypsa)
 [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/bjoernellens1/pypsa-eur/master)
 
+[![devcontainers/ci](https://github.com/bjoernellens1/pypsa-eur-project/actions/workflows/devcontainer.yml/badge.svg)](https://github.com/bjoernellens1/pypsa-eur-project/actions/workflows/devcontainer.yml)
+
 # PyPSA-Eur: A Sector-Coupled Open Optimisation Model of the European Energy System
 
 PyPSA-Eur is an open model dataset of the European energy system at the
