@@ -57,7 +57,7 @@ jobs:
           # # Specify path to checked out folder if not using default (or for testing with nektos/act)
           # checkoutPath: # optional, default is .
           # # Control when images are pushed. Options are never, filter, always. For filter (default), images are pushed if the refFilterForPush and eventFilterForPush conditions are met
-          # push: # optional, default is filter
+          push: always # optional, default is filter
           # # Set the source branches (e.g. refs/heads/main) that are allowed to trigger a push of the dev container image. Leave empty to allow all.
           # refFilterForPush: # optional
           # # Set the event names (e.g. pull_request, push) that are allowed to trigger a push of the dev container image. Defaults to push. Leave empty for all
@@ -69,7 +69,7 @@ jobs:
           # # Some steps for building the dev container (e.g. container-features) require generating additional build files. To aid docker build cache re-use, you can use this property to set the path that these files will be generated under and use the actions/cache action to cache that folder across runs
           # userDataFolder: # optional
           # # Specify additional images to use for build caching
-          # cacheFrom: # optional
+          cacheFrom: ghcr.io/bjoernellens1/pypsa-eur-project # optional
           # # Builds the image with `--no-cache` (takes precedence over `cacheFrom`)
           # noCache: # optional
           
