@@ -8,6 +8,11 @@
 	 },
 	// "image": "ghcr.io/bjoernellens1/pypsa-eur-project:latest"
 	// "dockerComposeFile": "docker-compose.yml",
+	"customizations": {
+    "devpod": {
+      "prebuildRepository": "ghcr.io/my-org/my-repo"
+    }
+  },
     "service": "dev",
 	"workspaceFolder": "/workspace"
 
